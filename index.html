@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./console.js"></script>
+  <script>
+    const getTiming = (logType, contentType, items) => {
+      if (logType == 'NOOP') {
+          return logAllToNowhere(contentType, items);
+      } else if (logType == 'CONSOLE') {
+          return logAllToConsole(contentType, items);
+      }
+      return "N/A";
+    };
+
+    const run = () => {
+        const logType = document.querySelector('input[name="logType"]:checked').value;
+        const contentType = document.querySelector('input[name="contentType"]:checked').value;
+        const items = parseInt(document.querySelector('input[id="size"]').value, 10);
+        const results = document.querySelector('#results');
+        const timing = getTiming(logType, contentType, items);
+        const newResult = document.createElement('li');
+        const method = (logType == 'NOOP')? "NOOP":"console";
+        const content = (contentType == 'OBJECTS')?"objects":"strings";
+        newResult.innerHTML = `Logging to ${method} of ${items} ${content} took ${timing} ms`;
+        results.appendChild(newResult);
+    };
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Console Logging Performance Test</title>
+</head>
+<body>
+  <div>
+    <h1>Console Logging Performance Test</h1>
+    <div>
+      <div>
+        <input id="size" value="100"></input>
+        <label for="size">Number of items to output</label>
+        <br/><br/>
+        <fieldset>
+          <legend>Logging Type</legend>
+          <input type="radio" id="logTypeNoOp" name="logType" value="NOOP" checked="checked"></input>
+          <label for="logTypeNoOp">Log nothing</label><br/>
+          <input type="radio" id="logTypeConsole" name="logType" value="CONSOLE"></input>
+          <label for="logTypeConsole">Log to console</label>
+        </fieldset>
+        <br/>
+        <fieldset>
+          <legend>Content Type</legend>
+          <input type="radio" id="contentTypeStrings" name="contentType" value="STRINGS" checked="checked"></input>
+          <label for="contentTypeStrings">Strings</label><br/>
+          <input type="radio" id="contentTypeObjects" name="contentType" value="OBJECTS" checked="checked"></input>
+          <label for="contentTypeObjects">Objects</label><br/>
+
+        </fieldset>
+
+        <br/>
+        <button id="rubButton" onclick="run()">Run!</button>
+        <p></p>
+      </div>
+      <div id="output">
+        <p>Results will appear below.</p>
+        <ul id="results"></ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
